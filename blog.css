@@ -1,0 +1,10 @@
+﻿.blog-grid {
+  padding: 30px 0 50px;
+}
+.blog-grid .container {
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+.blog-card a {
+  color: #70a35e;
+  font-weight: bold;
+}

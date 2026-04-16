@@ -1,0 +1,250 @@
+﻿<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Nhóm 12 - Trang chủ</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="common.css" />
+    <link rel="stylesheet" href="home.css" />
+    <link rel="stylesheet" href="ai-chat.css" />
+  </head>
+  <body>
+    <div class="site-wrapper">
+      <header class="main-header">
+        <div class="container">
+          <div class="header-content">
+            <div class="logo">Nhóm 12</div>
+            <div class="categories-dropdown">
+              <span class="dropdown-trigger"
+                >Tất cả danh mục <i class="fas fa-chevron-down"></i
+              ></span>
+              <div class="dropdown-menu">
+                <a href="shop.html">Điện tử</a>
+                <a href="shop.html">Gia dụng</a>
+                <a href="smart-home.html">Nhà thông minh</a>
+              </div>
+            </div>
+            <div class="search-bar home-search">
+              <input type="text" placeholder="Tìm sản phẩm..." />
+              <button class="search-btn"><i class="fas fa-search"></i></button>
+            </div>
+            <div class="user-actions">
+              <a href="#" class="action-item"><i class="fas fa-user"></i></a>
+              <a href="#" class="action-item"><i class="fas fa-bell"></i></a>
+              <a href="#" class="action-item cart-icon">
+                <i class="fas fa-shopping-cart"></i>
+                <span class="cart-count">0</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </header>
+      <nav class="secondary-nav">
+        <div class="container nav-content">
+          <ul class="nav-links">
+            <li><a href="index.html" class="active">Trang chủ</a></li>
+            <li><a href="shop.html">Cửa hàng</a></li>
+            <li><a href="brands.html">Thương hiệu</a></li>
+            <li><a href="deals.html">Khuyến mãi</a></li>
+            <li><a href="smart-home.html">Nhà thông minh</a></li>
+            <li><a href="blog.html">Bài viết</a></li>
+            <li><a href="weekly.html">ưu Đãi trong tuần</a></li>
+          </ul>
+          <div class="hotline">
+            <i class="fas fa-phone-alt"></i> Hotline: +888-256-666
+          </div>
+        </div>
+      </nav>
+      <main>
+        <section class="hero-banners home-hero">
+          <div class="container">
+            <div class="hero-grid">
+              <div class="banner-main">
+                <span class="label">Ưu đãi nổi bật</span>
+                <h1>Cuộc sống thông minh<br />tiện nghi cho mọi nhà</h1>
+                <p class="hero-text">
+                  Khám phá các thiết bị Điện tử và gia dụng chất lượng cao, giảm
+                  giá hấp dẫn.
+                </p>
+                <a href="shop.html" class="shop-now-btn">Mua ngay</a>
+              </div>
+              <div class="banner-side-grid">
+                <div class="banner-card">
+                  <h3>Tai nghe Bluetooth</h3>
+                  <p>âm thanh sống Động, không dây</p>
+                  <span class="price">129,000 VNĐ</span>
+                </div>
+                <div class="banner-card">
+                  <h3>Máy pha cà phê</h3>
+                  <p>Tiện lợi cho gia Đình</p>
+                  <span class="price">89,000 VNĐ</span>
+                </div>
+                <div class="banner-card sale-card">
+                  <h3>Đèn LED thông minh</h3>
+                  <p>Tiết kiệm Điện, Điều khiển từ xa</p>
+                  <span class="sale-badge">Giảm 20%</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section class="categories-strip home-categories">
+          <div class="container">
+            <div class="section-title">
+              <h2>Danh mục nổi bật</h2>
+              <p>Chọn danh mục phù hợp Để tìm sản phẩm nhanh hơn.</p>
+            </div>
+            <div class="categories-items" id="categoriesGrid">
+              <div class="loading-message">Đang tải danh mục...</div>
+            </div>
+          </div>
+        </section>
+        <section class="featured-products home-products">
+          <div class="container">
+            <div class="section-header">
+              <h2>Sản phẩm nổi bật</h2>
+              <p>Những mặt hàng Được ưa chuộng nhất trên trang chủ.</p>
+            </div>
+            <div class="products-grid" id="featuredProductsGrid">
+              <div class="loading-message">Đang tải sản phẩm nổi bật...</div>
+            </div>
+          </div>
+        </section>
+        <section class="weekly-highlight">
+          <div class="container">
+            <div class="weekly-card">
+              <div>
+                <h2>Ưu đãi trong tuần</h2>
+                <p>Giảm ngay Đến 30% trên các thiết bị Được săn Đón nhất.</p>
+              </div>
+              <a href="weekly.html" class="shop-now-btn">Xem ngay</a>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+    <script src="script.js"></script>
+    <script>
+      // Script riêng cho trang index
+      document.addEventListener("DOMContentLoaded", function () {
+        const categoriesGrid = document.getElementById("categoriesGrid");
+        const featuredProductsGrid = document.getElementById(
+          "featuredProductsGrid",
+        );
+
+        function formatPrice(value) {
+          return Number(value).toLocaleString("vi-VN", {
+            style: "currency",
+            currency: "VND",
+            maximumFractionDigits: 0,
+          });
+        }
+
+        function renderCategories(categories) {
+          if (!categoriesGrid) return;
+          if (!categories || categories.length === 0) {
+            categoriesGrid.innerHTML =
+              '<div class="empty-state">Không có danh mục.</div>';
+            return;
+          }
+
+          categoriesGrid.innerHTML = categories
+            .map((cat) => {
+              const iconMap = {
+                electronics: "fas fa-mobile-alt",
+                appliances: "fas fa-blender",
+                smart: "fas fa-home",
+                "dien-thoai": "fas fa-phone",
+                laptop: "fas fa-laptop",
+                tv: "fas fa-tv",
+                pc: "fas fa-desktop",
+                "phu-kien": "fas fa-headphones",
+                "an-ninh": "fas fa-shield-alt",
+                "am-thanh": "fas fa-volume-up",
+                mang: "fas fa-wifi",
+              };
+              const icon = iconMap[cat.slug] || "fas fa-tag";
+              return `
+                <a href="shop.html?category=${cat.slug}" class="category-item">
+                  <i class="${icon}"></i>
+                  <span class="cat-name">${cat.name}</span>
+                  <span class="product-count">Sản phẩm</span>
+                </a>`;
+            })
+            .join("");
+        }
+
+        function renderFeaturedProducts(products) {
+          if (!featuredProductsGrid) return;
+          if (!products || products.length === 0) {
+            featuredProductsGrid.innerHTML =
+              '<div class="empty-state">Không có sản phẩm nổi bật.</div>';
+            return;
+          }
+
+          featuredProductsGrid.innerHTML = products
+            .map((product) => {
+              const image =
+                product.image_url ||
+                "https://via.placeholder.com/150?text=Sản+phẩm";
+              const price = formatPrice(product.price || 0);
+              return `
+                <article class="product-card">
+                  <img src="${image}" alt="${product.name || "Sản phẩm"}" />
+                  <span class="cat-label">${product.category_name || "Khác"}</span>
+                  <h3>${product.name || "Sản phẩm"}</h3>
+                  <p class="weight">${product.description || ""}</p>
+                  <div class="price-row">
+                    <span class="current-price">${price}</span>
+                  </div>
+                  <a href="shop.html" class="select-options-btn">Thêm vào giỏ</a>
+                </article>`;
+            })
+            .join("");
+        }
+
+        async function loadCategories() {
+          if (!categoriesGrid) return;
+          categoriesGrid.innerHTML =
+            '<div class="loading-message">Đang tải danh mục...</div>';
+          try {
+            const response = await fetch(
+              "http://localhost:3000/api/categories",
+            );
+            if (!response.ok) throw new Error("Không thể tải danh mục");
+            const categories = await response.json();
+            renderCategories(categories);
+          } catch (err) {
+            categoriesGrid.innerHTML = `<div class="empty-state">Lỗi tải danh mục: ${err.message}</div>`;
+            console.error(err);
+          }
+        }
+
+        async function loadFeaturedProducts() {
+          if (!featuredProductsGrid) return;
+          featuredProductsGrid.innerHTML =
+            '<div class="loading-message">Đang tải sản phẩm nổi bật...</div>';
+          try {
+            const response = await fetch(
+              "http://localhost:3000/api/products/featured",
+            );
+            if (!response.ok) throw new Error("Không thể tải sản phẩm nổi bật");
+            const products = await response.json();
+            renderFeaturedProducts(products);
+          } catch (err) {
+            featuredProductsGrid.innerHTML = `<div class="empty-state">Lỗi tải sản phẩm: ${err.message}</div>`;
+            console.error(err);
+          }
+        }
+
+        loadCategories();
+        loadFeaturedProducts();
+      });
+    </script>
+    <script src="ai-chat.js"></script>
+  </body>
+</html>

@@ -185,14 +185,14 @@
             .map((product) => {
               const catKey = product.category?.toString().toLowerCase() || "";
               const catLabel = categoryLabelMap[catKey] || product.category_name || "Khác";
-              const image =
-                product.image_url ||
-                "https://via.placeholder.com/150?text=Sản+phẩm";
+              const image = product.image_url
+                ? `http://localhost:3000${product.image_url}`
+                : "https://via.placeholder.com/150?text=No+Image";
               const price = formatPrice(product.price || 0);
               const discount = product.discount ? `- ${product.discount}%` : "";
               return `
                 <article class="product-card" data-category="${catKey}" data-id="${product.id}">
-                  <img src="${image}" alt="${product.name || "Sản phẩm"}" />
+                  <img src="${image}" alt="${product.name || "Sản phẩm"}" onerror="this.src='https://via.placeholder.com/150?text=Error'" loading="lazy" />
                   <span class="cat-label">${catLabel}</span>
                   <h3>${product.name || "Sản phẩm"}</h3>
                   <p class="weight">${product.description || ""}</p>
@@ -363,6 +363,5 @@
     <script src="ai-chat.js"></script>
   </body>
 </html>
-    <script src="ai-chat.js"></script>
   </body>
 </html>

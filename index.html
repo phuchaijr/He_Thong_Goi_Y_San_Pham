@@ -67,25 +67,24 @@
                 <span class="label">Ưu đãi nổi bật</span>
                 <h1>Cuộc sống thông minh<br />tiện nghi cho mọi nhà</h1>
                 <p class="hero-text">
-                  Khám phá các thiết bị Điện tử và gia dụng chất lượng cao, giảm
-                  giá hấp dẫn.
+                  Khám phá các thiết bị Điện tử và gia dụng chất lượng cao với giá ưu đãi hấp dẫn. Công nghệ hiện đại cho ngôi nhà của bạn.
                 </p>
                 <a href="shop.html" class="shop-now-btn">Mua ngay</a>
               </div>
               <div class="banner-side-grid">
                 <div class="banner-card">
                   <h3>Tai nghe Bluetooth</h3>
-                  <p>âm thanh sống Động, không dây</p>
-                  <span class="price">129,000 VNĐ</span>
+                  <p>Âm thanh sống động, không dây</p>
+                  <span class="price">1,290,000 VNĐ</span>
                 </div>
                 <div class="banner-card">
                   <h3>Máy pha cà phê</h3>
-                  <p>Tiện lợi cho gia Đình</p>
-                  <span class="price">89,000 VNĐ</span>
+                  <p>Tiện lợi cho gia đình</p>
+                  <span class="price">890,000 VNĐ</span>
                 </div>
                 <div class="banner-card sale-card">
                   <h3>Đèn LED thông minh</h3>
-                  <p>Tiết kiệm Điện, Điều khiển từ xa</p>
+                  <p>Tiết kiệm điện, Điều khiển từ xa</p>
                   <span class="sale-badge">Giảm 20%</span>
                 </div>
               </div>
@@ -119,7 +118,7 @@
             <div class="weekly-card">
               <div>
                 <h2>Ưu đãi trong tuần</h2>
-                <p>Giảm ngay Đến 30% trên các thiết bị Được săn Đón nhất.</p>
+                <p>Giảm ngay đến 30% trên các thiết bị được săn đón nhất. Đừng bỏ lỡ cơ hội sở hữu công nghệ tiên tiến với giá ưu đãi.</p>
               </div>
               <a href="weekly.html" class="shop-now-btn">Xem ngay</a>
             </div>
@@ -153,7 +152,7 @@
           }
 
           categoriesGrid.innerHTML = categories
-            .map((cat) => {
+            .map((cat, index) => {
               const iconMap = {
                 electronics: "fas fa-mobile-alt",
                 appliances: "fas fa-blender",
@@ -169,7 +168,7 @@
               };
               const icon = iconMap[cat.slug] || "fas fa-tag";
               return `
-                <a href="shop.html?category=${cat.slug}" class="category-item">
+                <a href="shop.html?category=${cat.slug}" class="category-item" style="animation: fadeInUp 0.6s ease-out ${index * 0.1}s both;">
                   <i class="${icon}"></i>
                   <span class="cat-name">${cat.name}</span>
                   <span class="product-count">Sản phẩm</span>
@@ -187,14 +186,14 @@
           }
 
           featuredProductsGrid.innerHTML = products
-            .map((product) => {
-              const image =
-                product.image_url ||
-                "https://via.placeholder.com/150?text=Sản+phẩm";
+            .map((product, index) => {
+              const image = product.image_url
+                ? `http://localhost:3000${product.image_url}`
+                : "https://via.placeholder.com/150?text=No+Image";
               const price = formatPrice(product.price || 0);
               return `
-                <article class="product-card">
-                  <img src="${image}" alt="${product.name || "Sản phẩm"}" />
+                <article class="product-card" style="animation: fadeInUp 0.6s ease-out ${index * 0.1}s both;">
+                  <img src="${image}" alt="${product.name || "Sản phẩm"}" onerror="this.src='https://via.placeholder.com/150?text=Error'" loading="lazy" />
                   <span class="cat-label">${product.category_name || "Khác"}</span>
                   <h3>${product.name || "Sản phẩm"}</h3>
                   <p class="weight">${product.description || ""}</p>

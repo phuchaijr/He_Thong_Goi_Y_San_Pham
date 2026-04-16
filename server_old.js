@@ -8,7 +8,6 @@ app.use(cors());
 app.use(express.json());
 app.use("/img", express.static("public/img"));
 // Serve static files từ thư mục hiện tại
-app.use(express.static('.'));
 app.use(express.static(__dirname));
 
 async function startServer() {
@@ -36,8 +35,6 @@ async function startServer() {
         console.error("Query error:", err);
         res.status(500).json({ error: err.message });
       }
-    });
-
     // API lấy sản phẩm nổi bật
     app.get("/api/products/featured", async (req, res) => {
       try {
@@ -123,6 +120,31 @@ async function startServer() {
           SELECT id, name, slug
           FROM Categories
           ORDER BY name
+        `);
+        res.json(result.recordset);
+      } catch (err) {
+        console.error("Query error:", err);
+        res.status(500).json({ error: err.message });
+      }
+    });
+
+    // API sản phẩm nổi bật (giả sử stock > 20)
+    app.get("/api/products/featured", async (req, res) => {
+      try {
+        const result = await sql.query(`
+          SELECT TOP 8
+            p.id,
+            p.name,
+            p.price,
+            p.description,
+            p.stock,
+            p.image_url,
+            c.slug AS category,
+            c.name AS category_name
+          FROM Products p
+          JOIN Categories c ON p.category_id = c.id
+          WHERE p.stock > 20
+          ORDER BY p.price DESC
         `);
         res.json(result.recordset);
       } catch (err) {

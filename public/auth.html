@@ -1,0 +1,570 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Đăng Nhập / Đăng Ký - Hệ Thống Gợi Ý Sản Phẩm</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+      }
+
+      .auth-container {
+        width: 100%;
+        max-width: 900px;
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        overflow: hidden;
+        display: flex;
+      }
+
+      .auth-form-wrapper {
+        flex: 1;
+        padding: 60px 40px;
+        display: none;
+      }
+
+      .auth-form-wrapper.active {
+        display: block;
+      }
+
+      .auth-promo {
+        flex: 1;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 60px 40px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+      }
+
+      .promo-icon {
+        font-size: 80px;
+        margin-bottom: 30px;
+        opacity: 0.8;
+      }
+
+      .promo-text h2 {
+        font-size: 32px;
+        margin-bottom: 20px;
+        font-weight: 700;
+      }
+
+      .promo-text p {
+        font-size: 16px;
+        line-height: 1.6;
+        opacity: 0.9;
+      }
+
+      .form-group {
+        margin-bottom: 20px;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 600;
+        color: #333;
+      }
+
+      .form-group input,
+      .form-group select {
+        width: 100%;
+        padding: 12px 15px;
+        border: 2px solid #e1e1e1;
+        border-radius: 8px;
+        font-size: 16px;
+        transition: all 0.3s ease;
+      }
+
+      .form-group input:focus,
+      .form-group select:focus {
+        outline: none;
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+      }
+
+      .form-group input[type="password"]:focus {
+        border-color: #667eea;
+      }
+
+      .password-toggle {
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        color: #667eea;
+        font-size: 18px;
+      }
+
+      .password-wrapper {
+        position: relative;
+      }
+
+      .form-title {
+        font-size: 28px;
+        font-weight: 700;
+        margin-bottom: 30px;
+        color: #333;
+      }
+
+      .form-description {
+        font-size: 14px;
+        color: #666;
+        margin-bottom: 30px;
+      }
+
+      .btn-submit {
+        width: 100%;
+        padding: 14px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin-bottom: 20px;
+      }
+
+      .btn-submit:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+      }
+
+      .btn-submit:active {
+        transform: translateY(0);
+      }
+
+      .toggle-auth {
+        text-align: center;
+        font-size: 14px;
+        color: #666;
+      }
+
+      .toggle-auth a {
+        color: #667eea;
+        text-decoration: none;
+        font-weight: 600;
+        cursor: pointer;
+      }
+
+      .toggle-auth a:hover {
+        text-decoration: underline;
+      }
+
+      .error-message,
+      .success-message {
+        padding: 12px 15px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        font-size: 14px;
+        display: none;
+      }
+
+      .error-message {
+        background: #fee;
+        color: #c33;
+        border: 1px solid #fcc;
+      }
+
+      .error-message.show,
+      .success-message.show {
+        display: block;
+      }
+
+      .success-message {
+        background: #efe;
+        color: #3c3;
+        border: 1px solid #cfc;
+      }
+
+      .loading {
+        display: none;
+        text-align: center;
+        color: #667eea;
+        font-weight: 600;
+      }
+
+      .spinner {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border: 3px solid #f3f3f3;
+        border-top: 3px solid #667eea;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin-right: 10px;
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      .checkbox-group {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 20px;
+      }
+
+      .checkbox-group input[type="checkbox"] {
+        width: auto;
+        margin: 0;
+      }
+
+      .checkbox-group label {
+        margin: 0;
+        font-weight: normal;
+        color: #666;
+      }
+
+      @media (max-width: 768px) {
+        .auth-container {
+          flex-direction: column;
+        }
+
+        .auth-promo {
+          padding: 40px 20px;
+          display: flex;
+        }
+
+        .auth-form-wrapper {
+          padding: 40px 20px;
+        }
+
+        .form-title {
+          font-size: 24px;
+        }
+
+        .promo-icon {
+          font-size: 60px;
+        }
+
+        .promo-text h2 {
+          font-size: 24px;
+        }
+      }
+    </style>
+    <link rel="stylesheet" href="chatbot.css" />
+  </head>
+
+  <body>
+    <div class="auth-container">
+      <!-- Login Form -->
+      <div class="auth-form-wrapper active" id="loginForm">
+        <h1 class="form-title">🚀 Đăng Nhập</h1>
+        <p class="form-description">
+          Chào mừng quay lại! Đăng nhập để tiếp tục mua sắm.
+        </p>
+
+        <div class="error-message" id="loginError"></div>
+        <div class="success-message" id="loginSuccess"></div>
+
+        <form onsubmit="handleLogin(event)">
+          <div class="form-group">
+            <label for="loginEmail">📧 Email</label>
+            <input
+              type="email"
+              id="loginEmail"
+              placeholder="example@email.com"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="loginPassword">🔑 Mật Khẩu</label>
+            <div class="password-wrapper">
+              <input
+                type="password"
+                id="loginPassword"
+                placeholder="Nhập mật khẩu"
+                required
+              />
+              <span
+                class="password-toggle"
+                onclick="togglePassword('loginPassword')"
+              >
+                <i class="fas fa-eye"></i>
+              </span>
+            </div>
+          </div>
+
+          <button type="submit" class="btn-submit">Đăng Nhập</button>
+          <div class="loading" id="loginLoading">
+            <span class="spinner"></span>Đang xử lý...
+          </div>
+        </form>
+
+        <div class="toggle-auth">
+          Chưa có tài khoản?
+          <a onclick="switchForm('register')">Đăng Ký Ngay</a>
+        </div>
+      </div>
+
+      <!-- Register Form -->
+      <div class="auth-form-wrapper" id="registerForm">
+        <h1 class="form-title">✨ Đăng Ký</h1>
+        <p class="form-description">
+          Tạo tài khoản mới để bắt đầu mua sắm thông minh.
+        </p>
+
+        <div class="error-message" id="registerError"></div>
+        <div class="success-message" id="registerSuccess"></div>
+
+        <form onsubmit="handleRegister(event)">
+          <div class="form-group">
+            <label for="registerUsername">👤 Tên Người Dùng</label>
+            <input
+              type="text"
+              id="registerUsername"
+              placeholder="Chọn tên người dùng"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="registerEmail">📧 Email</label>
+            <input
+              type="email"
+              id="registerEmail"
+              placeholder="example@email.com"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="registerPassword">🔑 Mật Khẩu</label>
+            <div class="password-wrapper">
+              <input
+                type="password"
+                id="registerPassword"
+                placeholder="Tối thiểu 6 ký tự"
+                required
+              />
+              <span
+                class="password-toggle"
+                onclick="togglePassword('registerPassword')"
+              >
+                <i class="fas fa-eye"></i>
+              </span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="registerConfirmPassword">✔️ Xác Nhận Mật Khẩu</label>
+            <div class="password-wrapper">
+              <input
+                type="password"
+                id="registerConfirmPassword"
+                placeholder="Nhập lại mật khẩu"
+                required
+              />
+              <span
+                class="password-toggle"
+                onclick="togglePassword('registerConfirmPassword')"
+              >
+                <i class="fas fa-eye"></i>
+              </span>
+            </div>
+          </div>
+
+          <div class="checkbox-group">
+            <input type="checkbox" id="agreeTerms" required />
+            <label for="agreeTerms">Tôi đồng ý với điều khoản dịch vụ</label>
+          </div>
+
+          <button type="submit" class="btn-submit">Đăng Ký</button>
+          <div class="loading" id="registerLoading">
+            <span class="spinner"></span>Đang xử lý...
+          </div>
+        </form>
+
+        <div class="toggle-auth">
+          Đã có tài khoản?
+          <a onclick="switchForm('login')">Đăng Nhập</a>
+        </div>
+      </div>
+
+      <!-- Promo Section -->
+      <div class="auth-promo">
+        <div class="promo-icon">🛍️</div>
+        <div class="promo-text">
+          <h2>Mua Sắm Thông Minh</h2>
+          <p>
+            Sử dụng hệ thống AI RAG để nhận gợi ý sản phẩm cá nhân hóa. Quản lý
+            giỏ hàng của bạn, theo dõi đơn hàng và tiết kiệm thời gian tìm kiếm.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function switchForm(form) {
+        document.getElementById("loginForm").classList.remove("active");
+        document.getElementById("registerForm").classList.remove("active");
+
+        if (form === "login") {
+          document.getElementById("loginForm").classList.add("active");
+        } else {
+          document.getElementById("registerForm").classList.add("active");
+        }
+
+        document
+          .querySelectorAll(".error-message, .success-message")
+          .forEach((el) => {
+            el.classList.remove("show");
+          });
+      }
+
+      function togglePassword(inputId) {
+        const input = document.getElementById(inputId);
+        const icon = event.target
+          .closest(".password-toggle")
+          .querySelector("i");
+        if (input.type === "password") {
+          input.type = "text";
+          icon.classList.remove("fa-eye");
+          icon.classList.add("fa-eye-slash");
+        } else {
+          input.type = "password";
+          icon.classList.remove("fa-eye-slash");
+          icon.classList.add("fa-eye");
+        }
+      }
+
+      function showMessage(elementId, message, isError = true) {
+        const element = document.getElementById(elementId);
+        element.textContent = message;
+        element.classList.add("show");
+        setTimeout(() => {
+          element.classList.remove("show");
+        }, 5000);
+      }
+
+      async function handleLogin(event) {
+        event.preventDefault();
+
+        const email = document.getElementById("loginEmail").value;
+        const password = document.getElementById("loginPassword").value;
+        const loading = document.getElementById("loginLoading");
+
+        loading.style.display = "block";
+
+        try {
+          const response = await fetch("http://localhost:3000/api/auth/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email, password }),
+          });
+
+          const data = await response.json();
+
+          if (data.success) {
+            localStorage.setItem("authToken", data.token);
+            localStorage.setItem("user", JSON.stringify(data.user));
+            showMessage(
+              "loginSuccess",
+              "✅ Đăng nhập thành công! Đang chuyển hướng...",
+              false,
+            );
+            setTimeout(() => {
+              window.location.href = "/index.html";
+            }, 1500);
+          } else {
+            showMessage("loginError", "❌ " + data.message, true);
+          }
+        } catch (error) {
+          showMessage("loginError", "❌ Lỗi kết nối: " + error.message, true);
+        } finally {
+          loading.style.display = "none";
+        }
+      }
+
+      async function handleRegister(event) {
+        event.preventDefault();
+
+        const fullname = document.getElementById("registerUsername").value;
+        const email = document.getElementById("registerEmail").value;
+        const password = document.getElementById("registerPassword").value;
+        const confirmPassword = document.getElementById(
+          "registerConfirmPassword",
+        ).value;
+        const loading = document.getElementById("registerLoading");
+
+        loading.style.display = "block";
+
+        try {
+          const response = await fetch(
+            "http://localhost:3000/api/auth/register",
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                fullname,
+                email,
+                password,
+                confirmPassword,
+              }),
+            },
+          );
+
+          const data = await response.json();
+
+          if (data.success) {
+            localStorage.setItem("authToken", data.token);
+            localStorage.setItem("user", JSON.stringify(data.user));
+            showMessage(
+              "registerSuccess",
+              "✅ Đăng ký thành công! Đang chuyển hướng...",
+              false,
+            );
+            setTimeout(() => {
+              window.location.href = "/index.html";
+            }, 1500);
+          } else {
+            showMessage("registerError", "❌ " + data.message, true);
+          }
+        } catch (error) {
+          showMessage(
+            "registerError",
+            "❌ Lỗi kết nối: " + error.message,
+            true,
+          );
+        } finally {
+          loading.style.display = "none";
+        }
+      }
+
+      // Auto-focus first input
+      document.getElementById("loginEmail").focus();
+    </script>
+    <script src="chatbot.js"></script>
+  </body>
+</html>

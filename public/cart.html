@@ -1,0 +1,597 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Giỏ Hàng - Hệ Thống Gợi Ý Sản Phẩm</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="/common.css" />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: #f8f9fa;
+      }
+
+      .navbar {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 15px 20px;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+      }
+
+      .navbar-brand {
+        font-size: 22px;
+        font-weight: 700;
+      }
+
+      .nav-auth {
+        margin-left: auto;
+      }
+
+      .logout-link {
+        color: white;
+        text-decoration: none;
+        cursor: pointer;
+      }
+
+      .logout-link:hover {
+        text-decoration: underline;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 40px auto;
+        padding: 20px;
+      }
+
+      .cart-header {
+        font-size: 32px;
+        font-weight: 700;
+        margin-bottom: 30px;
+        color: #333;
+      }
+
+      .cart-wrapper {
+        display: grid;
+        grid-template-columns: 1fr 350px;
+        gap: 30px;
+      }
+
+      .cart-items {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+      }
+
+      .cart-item {
+        display: flex;
+        gap: 20px;
+        padding: 20px;
+        border-bottom: 1px solid #eee;
+        align-items: center;
+        transition: background 0.3s ease;
+      }
+
+      .cart-item:last-child {
+        border-bottom: none;
+      }
+
+      .cart-item:hover {
+        background: #f8f9fa;
+      }
+
+      .item-image {
+        width: 120px;
+        height: 120px;
+        background: #f0f0f0;
+        border-radius: 8px;
+        overflow: hidden;
+        flex-shrink: 0;
+      }
+
+      .item-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .item-details {
+        flex: 1;
+      }
+
+      .item-name {
+        font-weight: 600;
+        font-size: 16px;
+        color: #333;
+        margin-bottom: 5px;
+      }
+
+      .item-category {
+        font-size: 13px;
+        color: #999;
+        margin-bottom: 10px;
+      }
+
+      .item-price {
+        font-size: 18px;
+        font-weight: 700;
+        color: #e74c3c;
+      }
+
+      .item-controls {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .quantity-control {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        background: #f0f0f0;
+        border-radius: 6px;
+        overflow: hidden;
+      }
+
+      .quantity-btn {
+        width: 36px;
+        height: 36px;
+        border: none;
+        background: transparent;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #667eea;
+        font-weight: 600;
+      }
+
+      .quantity-btn:hover {
+        background: rgba(102, 126, 234, 0.1);
+      }
+
+      .quantity-display {
+        width: 50px;
+        text-align: center;
+        font-weight: 600;
+      }
+
+      .remove-btn {
+        background: #f87171;
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 14px;
+        transition: all 0.3s ease;
+      }
+
+      .remove-btn:hover {
+        background: #dc2626;
+        transform: scale(1.05);
+      }
+
+      .cart-summary {
+        background: white;
+        border-radius: 12px;
+        padding: 30px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        height: fit-content;
+        position: sticky;
+        top: 20px;
+      }
+
+      .summary-title {
+        font-size: 20px;
+        font-weight: 700;
+        margin-bottom: 20px;
+        color: #333;
+      }
+
+      .summary-row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 15px;
+        font-size: 15px;
+        color: #666;
+      }
+
+      .summary-row span:last-child {
+        font-weight: 600;
+      }
+
+      .summary-divider {
+        height: 1px;
+        background: #eee;
+        margin: 20px 0;
+      }
+
+      .summary-total {
+        display: flex;
+        justify-content: space-between;
+        font-size: 18px;
+        font-weight: 700;
+        color: #333;
+      }
+
+      .summary-total .price {
+        color: #e74c3c;
+      }
+
+      .checkout-btn {
+        width: 100%;
+        padding: 15px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        margin-top: 20px;
+        transition: all 0.3s ease;
+      }
+
+      .checkout-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+      }
+
+      .continue-shopping {
+        width: 100%;
+        padding: 12px;
+        background: white;
+        color: #667eea;
+        border: 2px solid #667eea;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        margin-top: 10px;
+        transition: all 0.3s ease;
+      }
+
+      .continue-shopping:hover {
+        background: rgba(102, 126, 234, 0.05);
+      }
+
+      .empty-cart {
+        background: white;
+        border-radius: 12px;
+        padding: 80px 20px;
+        text-align: center;
+        grid-column: 1 / -1;
+      }
+
+      .empty-icon {
+        font-size: 80px;
+        color: #ddd;
+        margin-bottom: 20px;
+      }
+
+      .empty-title {
+        font-size: 24px;
+        font-weight: 700;
+        color: #333;
+        margin-bottom: 10px;
+      }
+
+      .empty-text {
+        color: #999;
+        margin-bottom: 30px;
+      }
+
+      .empty-link {
+        display: inline-block;
+        padding: 12px 30px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        text-decoration: none;
+        border-radius: 8px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+      }
+
+      .empty-link:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+      }
+
+      .loading {
+        text-align: center;
+        padding: 60px 20px;
+      }
+
+      .spinner {
+        display: inline-block;
+        width: 40px;
+        height: 40px;
+        border: 4px solid #f3f3f3;
+        border-top: 4px solid #667eea;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      @media (max-width: 768px) {
+        .cart-wrapper {
+          grid-template-columns: 1fr;
+        }
+
+        .cart-summary {
+          position: static;
+        }
+
+        .cart-item {
+          flex-wrap: wrap;
+        }
+
+        .item-image {
+          width: 100px;
+          height: 100px;
+        }
+      }
+    </style>
+    <link rel="stylesheet" href="chatbot.css" />
+  </head>
+
+  <body>
+    <!-- Navigation -->
+    <nav class="navbar">
+      <div class="navbar-brand">
+        <i class="fas fa-shopping-cart"></i> Giỏ Hàng
+      </div>
+      <div class="nav-auth" id="navAuth">
+        <a href="/auth.html">Đăng Nhập</a>
+      </div>
+    </nav>
+
+    <!-- Main Container -->
+    <div class="container">
+      <h1 class="cart-header">
+        <i class="fas fa-shopping-cart"></i> Giỏ Hàng của Tôi
+      </h1>
+
+      <div class="cart-wrapper" id="cartWrapper">
+        <div class="loading">
+          <div class="spinner"></div>
+          <p style="margin-top: 20px; color: #999">Đang tải giỏ hàng...</p>
+        </div>
+      </div>
+    </div>
+    <!-- CART MODAL -->
+    <div class="cart-overlay" id="cartOverlay">
+      <div class="cart-modal">
+        <div class="cart-header">
+          <h2>🛒 Giỏ hàng của bạn</h2>
+          <button id="closeCart">&times;</button>
+        </div>
+
+        <div class="cart-body" id="cartItems">
+          <div class="empty-state">Giỏ hàng trống</div>
+        </div>
+
+        <div class="cart-summary">
+          <div class="summary-row">
+            <span>Tạm tính</span>
+            <span id="subtotal">0 đ</span>
+          </div>
+          <div class="summary-row total">
+            <span>Tổng cộng</span>
+            <span id="total">0 đ</span>
+          </div>
+        </div>
+
+        <div class="cart-footer">
+          <button class="btn-secondary" id="continueShopping">
+            Tiếp tục mua
+          </button>
+          <button class="btn-primary">Thanh toán</button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      let cart = [];
+      const token = localStorage.getItem("authToken");
+      const user = JSON.parse(localStorage.getItem("user"));
+
+      // Check authentication
+      function checkAuth() {
+        if (!token || !user) {
+          window.location.href = "/auth.html";
+          return;
+        }
+
+        // Update navigation
+        document.getElementById("navAuth").innerHTML = `
+          <span>👤 ${user.username}</span>
+          <a href="#" onclick="logout()" style="color: white; text-decoration: none; margin-left: 15px;">
+            <i class="fas fa-sign-out-alt"></i> Đăng Xuất
+          </a>
+        `;
+      }
+
+      function logout() {
+        localStorage.removeItem("authToken");
+        localStorage.removeItem("user");
+        window.location.href = "/auth.html";
+      }
+
+      async function loadCart() {
+        try {
+          const response = await fetch("http://localhost:3000/api/cart", {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+          cart = await response.json();
+          renderCart();
+        } catch (error) {
+          console.error("Error loading cart:", error);
+          document.getElementById("cartWrapper").innerHTML = `
+            <div class="empty-cart">
+              <div class="empty-icon"><i class="fas fa-exclamation-triangle"></i></div>
+              <h2 class="empty-title">Lỗi tải giỏ hàng</h2>
+              <p class="empty-text">${error.message}</p>
+            </div>
+          `;
+        }
+      }
+
+      function renderCart() {
+        const wrapper = document.getElementById("cartWrapper");
+
+        if (cart.length === 0) {
+          wrapper.innerHTML = `
+            <div class="empty-cart">
+              <div class="empty-icon"><i class="fas fa-shopping-cart"></i></div>
+              <h2 class="empty-title">Giỏ hàng của bạn trống</h2>
+              <p class="empty-text">Hãy thêm sản phẩm yêu thích của bạn để bắt đầu mua sắm</p>
+              <a href="/shop.html" class="empty-link">Tiếp tục mua sắm</a>
+            </div>
+          `;
+          return;
+        }
+
+        const cartHTML = `
+          <div class="cart-items">
+            ${cart
+              .map(
+                (item) => `
+              <div class="cart-item">
+                <div class="item-image">
+                  <img src="${item.image_url || "https://via.placeholder.com/120?text=No+Image"}" alt="${item.name}" onerror="this.src='https://via.placeholder.com/120?text=Error'" />
+                </div>
+                <div class="item-details">
+                  <div class="item-name">${item.name}</div>
+                  <div class="item-category">${item.category_name || "Khác"}</div>
+                  <div class="item-price">${formatPrice(item.price * item.quantity)}</div>
+                </div>
+                <div class="item-controls">
+                  <div class="quantity-control">
+                    <button class="quantity-btn" onclick="updateQuantity(${item.product_id}, ${item.quantity - 1})">−</button>
+                    <div class="quantity-display">${item.quantity}</div>
+                    <button class="quantity-btn" onclick="updateQuantity(${item.product_id}, ${item.quantity + 1})">+</button>
+                  </div>
+                  <button class="remove-btn" onclick="removeFromCart(${item.product_id})">
+                    <i class="fas fa-trash"></i> Xóa
+                  </button>
+                </div>
+              </div>
+            `,
+              )
+              .join("")}
+          </div>
+
+          <div class="cart-summary">
+            <div class="summary-title">Tóm Tắt Đơn Hàng</div>
+            <div class="summary-row">
+              <span>Tổng tiền hàng:</span>
+              <span>${formatPrice(calculateSubtotal())}</span>
+            </div>
+            <div class="summary-row">
+              <span>Phí vận chuyển:</span>
+              <span>${formatPrice(30000)}</span>
+            </div>
+            <div class="summary-divider"></div>
+            <div class="summary-total">
+              <span>Tổng cộng:</span>
+              <span class="price">${formatPrice(calculateSubtotal() + 30000)}</span>
+            </div>
+            <button class="checkout-btn">Tiến Hành Thanh Toán</button>
+            <a href="/shop.html" class="continue-shopping">← Tiếp Tục Mua Sắm</a>
+          </div>
+        `;
+
+        wrapper.innerHTML = cartHTML;
+      }
+
+      async function updateQuantity(productId, newQuantity) {
+        if (newQuantity <= 0) {
+          removeFromCart(productId);
+          return;
+        }
+
+        try {
+          const response = await fetch(
+            "http://localhost:3000/api/cart/update",
+            {
+              method: "PUT",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+              body: JSON.stringify({
+                product_id: productId,
+                quantity: newQuantity,
+              }),
+            },
+          );
+
+          if (response.ok) {
+            loadCart();
+          }
+        } catch (error) {
+          console.error("Error updating quantity:", error);
+        }
+      }
+
+      async function removeFromCart(productId) {
+        try {
+          const response = await fetch(
+            `http://localhost:3000/api/cart/remove/${productId}`,
+            {
+              method: "DELETE",
+              headers: { Authorization: `Bearer ${token}` },
+            },
+          );
+
+          if (response.ok) {
+            loadCart();
+          }
+        } catch (error) {
+          console.error("Error removing from cart:", error);
+        }
+      }
+
+      function calculateSubtotal() {
+        return cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+      }
+
+      function formatPrice(price) {
+        return new Intl.NumberFormat("vi-VN", {
+          style: "currency",
+          currency: "VND",
+          maximumFractionDigits: 0,
+        }).format(price);
+      }
+
+      // Initialize
+      document.addEventListener("DOMContentLoaded", () => {
+        checkAuth();
+        loadCart();
+      });
+    </script>
+    <script src="chatbot.js"></script>
+  </body>
+</html>

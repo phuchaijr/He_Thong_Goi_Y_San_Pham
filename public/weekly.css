@@ -1,0 +1,218 @@
+﻿/* =========================
+   WEEKLY DEALS - STYLE SYSTEM
+========================= */
+
+:root {
+  --primary: #2563eb;
+  --secondary: #1e293b;
+  --bg: #f6f8fc;
+  --card: #ffffff;
+  --text: #1f2937;
+  --muted: #6b7280;
+  --border: #e5e7eb;
+  --danger: #ef4444;
+  --success: #22c55e;
+  --yellow: #f59e0b;
+}
+
+/* =========================
+   BASE
+========================= */
+body {
+  margin: 0;
+  font-family: "Inter", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.container {
+  width: 90%;
+  max-width: 1200px;
+  margin: auto;
+}
+
+/* =========================
+   TITLE SECTION
+========================= */
+.section-title {
+  padding: 40px 0 20px;
+  text-align: center;
+}
+
+.section-title h1 {
+  font-size: 34px;
+  margin-bottom: 8px;
+  color: var(--secondary);
+  font-weight: 700;
+}
+
+.section-title p {
+  color: var(--muted);
+  font-size: 15px;
+}
+
+/* =========================
+   GRID
+========================= */
+.weekly-grid {
+  padding: 20px 0 60px;
+}
+
+#weeklyGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 22px;
+}
+
+/* =========================
+   WEEKLY CARD
+========================= */
+.weekly-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  position: relative;
+  transition: all 0.25s ease;
+  overflow: hidden;
+}
+
+/* hover effect */
+.weekly-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.08);
+  border-color: rgba(37, 99, 235, 0.3);
+}
+
+/* =========================
+   HIGHLIGHT CARD (FEATURED)
+========================= */
+.highlight-card {
+  border: 2px solid var(--yellow);
+  box-shadow: 0 10px 25px rgba(245, 158, 11, 0.15);
+}
+
+.highlight-card::before {
+  content: "🔥 HOT WEEK DEAL";
+  position: absolute;
+  top: 12px;
+  left: -35px;
+  background: var(--yellow);
+  color: white;
+  font-size: 11px;
+  padding: 4px 50px;
+  transform: rotate(-35deg);
+  font-weight: 700;
+}
+
+/* =========================
+   IMAGE
+========================= */
+.weekly-card img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 12px;
+  background: #f3f4f6;
+}
+
+/* =========================
+   TITLE
+========================= */
+.weekly-card h3 {
+  font-size: 15px;
+  margin: 0;
+  color: var(--secondary);
+  font-weight: 600;
+}
+
+/* =========================
+   DESCRIPTION
+========================= */
+.weekly-card p {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.4;
+  min-height: 36px;
+}
+
+/* =========================
+   PRICE BLOCK
+========================= */
+.price {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.old-price {
+  font-size: 13px;
+  color: #9ca3af;
+  text-decoration: line-through;
+}
+
+.current-price {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+/* arrow effect */
+.price i {
+  color: var(--muted);
+}
+
+/* =========================
+   BUTTON
+========================= */
+.select-options-btn {
+  margin-top: auto;
+  display: inline-block;
+  text-align: center;
+  padding: 10px;
+  background: linear-gradient(135deg, var(--primary), #1d4ed8);
+  color: white;
+  border-radius: 10px;
+  text-decoration: none;
+  font-size: 14px;
+  transition: 0.2s ease;
+  font-weight: 500;
+}
+
+.select-options-btn:hover {
+  transform: scale(1.03);
+  box-shadow: 0 8px 18px rgba(37, 99, 235, 0.3);
+}
+
+/* =========================
+   LOADING / EMPTY
+========================= */
+.loading-message,
+.empty-state {
+  text-align: center;
+  color: var(--muted);
+  padding: 40px 0;
+  grid-column: 1 / -1;
+  font-size: 14px;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+@media (max-width: 768px) {
+  .section-title h1 {
+    font-size: 24px;
+  }
+
+  .weekly-card img {
+    height: 140px;
+  }
+
+  #weeklyGrid {
+    gap: 16px;
+  }
+}

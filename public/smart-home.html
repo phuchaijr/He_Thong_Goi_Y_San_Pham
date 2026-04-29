@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Nhóm 12-Nhà thông minh</title>
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="common.css" />
+    <link rel="stylesheet" href="smart-home.css" />
+    <link rel="stylesheet" href="chatbot.css" />
+  </head>
+
+  <body>
+    <div class="site-wrapper">
+      <!-- HEADER -->
+      <header class="main-header">
+        <div class="container">
+          <div class="header-content">
+            <div class="logo">Nhóm 12</div>
+
+            <div class="categories-dropdown">
+              <span class="dropdown-trigger">
+                Tất cả các danh mục <i class="fas fa-chevron-down"></i>
+              </span>
+              <div class="dropdown-menu">
+                <a href="shop.html">Điện tử</a>
+                <a href="shop.html">Gia dụng</a>
+                <a href="smart-home.html">Nhà thông minh</a>
+              </div>
+            </div>
+
+            <div class="search-bar">
+              <input type="text" placeholder="Tìm thiết bị thông minh..." />
+              <button class="search-btn">
+                <i class="fas fa-search"></i>
+              </button>
+            </div>
+
+            <div class="user-actions">
+              <a href="#" class="action-item"><i class="fas fa-user"></i></a>
+              <a href="#" class="action-item"><i class="fas fa-bell"></i></a>
+              <a href="#" class="action-item cart-icon">
+                <i class="fas fa-shopping-cart"></i>
+                <span class="cart-count">0</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- NAV -->
+      <nav class="secondary-nav">
+        <div class="container nav-content">
+          <ul class="nav-links">
+            <li><a href="index.html">Trang chủ</a></li>
+            <li><a href="shop.html">Cửa hàng</a></li>
+            <li><a href="brands.html">Thương hiệu</a></li>
+            <li><a href="deals.html">Khuyến mãi</a></li>
+            <li><a href="smart-home.html" class="active">Nhà thông minh</a></li>
+            <li><a href="blog.html">Bài viết</a></li>
+            <li><a href="weekly.html">Ưu đãi trong tuần</a></li>
+          </ul>
+
+          <div class="hotline">
+            <i class="fas fa-phone-alt"></i> Hotline: +888-256-666
+          </div>
+        </div>
+      </nav>
+
+      <!-- MAIN -->
+      <main>
+        <section class="section-title">
+          <div class="container">
+            <h1>Nhà thông minh</h1>
+            <p>
+              Thiết bị thông minh giúp người nhà hiện đại, an toàn và tiện nghi.
+            </p>
+          </div>
+        </section>
+
+        <section class="smart-products">
+          <div class="container">
+            <div class="products-grid" id="smartProductsGrid">
+              <div class="loading-message">Đang tải thiết bị thông minh...</div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+    <!-- CART MODAL -->
+    <div class="cart-overlay" id="cartOverlay">
+      <div class="cart-modal">
+        <div class="cart-header">
+          <h2>?? Giỏ hàng của bạn</h2>
+          <button id="closeCart">&times;</button>
+        </div>
+
+        <div class="cart-body" id="cartItems">
+          <div class="empty-state">Giỏ hàng trống</div>
+        </div>
+
+        <div class="cart-summary">
+          <div class="summary-row">
+            <span>Tạm tính</span>
+            <span id="subtotal">0 d</span>
+          </div>
+          <div class="summary-row total">
+            <span>Tổng cộng</span>
+            <span id="total">0 d</span>
+          </div>
+        </div>
+
+        <div class="cart-footer">
+          <button class="btn-secondary" id="continueShopping">
+            Tiếp tục mua hàng
+          </button>
+          <button class="btn-primary" id="checkoutBtn">Thanh toán</button>
+        </div>
+      </div>
+    </div>
+    <script src="tracking.js"></script>
+    <script src="utils.js"></script>
+    \n
+    <script src="script.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const smartProductsGrid = document.getElementById("smartProductsGrid");
+
+        function renderSmartProducts(products) {
+          if (!smartProductsGrid) return;
+          if (!products || products.length === 0) {
+            smartProductsGrid.innerHTML =
+              '<div class="empty-state">Không có thiết bị thông minh nào.</div>';
+            return;
+          }
+
+          smartProductsGrid.innerHTML = products
+            .map((product) => {
+              const image =
+                product.image_url ||
+                "https://via.placeholder.com/150?text=Nh�+th�ng+minh";
+              const price = formatPrice(product.price || 0);
+              const discount = Math.floor(Math.random() * 20) + 10; // Random discount 10-30%
+              return `
+                <article class="product-card">
+                  <img src="${image}" alt="${product.name || "Sản phẩm"}" />
+                  <span class="cat-label">${product.category_name || "Nhà thông minh"}</span>
+                  <h3>${product.name || "Sản phẩm"}</h3>
+                  <p class="weight">${product.description || ""}</p>
+                  <div class="price-row">
+                    <span class="current-price">${price}</span>
+                    <span class="discount-badge">-${discount}%</span>
+                  </div>
+                  <a href="#" class="select-options-btn">Thêm vào giỏ</a>
+                </article>`;
+            })
+            .join("");
+        }
+
+        async function loadSmartProducts() {
+          if (!smartProductsGrid) return;
+          smartProductsGrid.innerHTML =
+            '<div class="loading-message">Đang tải thiết bị thông minh...</div>';
+          try {
+            const response = await fetch(
+              "http://localhost:3000/api/products/category/smart",
+            );
+            if (!response.ok)
+              throw new Error("Không thể tải thiết bị thông minh");
+            const products = await response.json();
+            renderSmartProducts(products);
+          } catch (err) {
+            smartProductsGrid.innerHTML = `<div class="empty-state">Lỗi tải thiết bị: ${err.message}</div>`;
+            console.error(err);
+          }
+        }
+
+        loadSmartProducts();
+      });
+    </script>
+    <script src="chatbot.js"></script>
+  </body>
+</html>

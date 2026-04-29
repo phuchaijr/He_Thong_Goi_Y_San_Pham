@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Nhóm 12-Trang chủ</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="common.css" />
+    <link rel="stylesheet" href="home.css" />
+    <link rel="stylesheet" href="chatbot.css" />
+  </head>
+  <body>
+    <div class="site-wrapper">
+      <header class="main-header">
+        <div class="container">
+          <div class="header-content">
+            <div class="logo">Nhóm 12</div>
+            <div class="categories-dropdown">
+              <span class="dropdown-trigger"
+                >Tất cả danh mục <i class="fas fa-chevron-down"></i
+              ></span>
+              <div class="dropdown-menu">
+                <a href="shop.html">Điện tử</a>
+                <a href="shop.html">Gia dụng</a>
+                <a href="smart-home.html">Nhà thông minh</a>
+              </div>
+            </div>
+            <div class="search-bar home-search">
+              <input type="text" placeholder="Tìm sản phẩm..." />
+              <button class="search-btn"><i class="fas fa-search"></i></button>
+            </div>
+            <div class="user-actions">
+              <a href="auth.html" class="action-item"
+                ><i class="fas fa-user"></i
+              ></a>
+              <a href="#" class="action-item"><i class="fas fa-bell"></i></a>
+              <a href="#" class="action-item cart-icon">
+                <i class="fas fa-shopping-cart"></i>
+                <span class="cart-count">0</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </header>
+      <nav class="secondary-nav">
+        <div class="container nav-content">
+          <ul class="nav-links">
+            <li><a href="index.html" class="active">Trang chủ</a></li>
+            <li><a href="shop.html">Cửa hàng</a></li>
+            <li><a href="brands.html">Thương hiệu</a></li>
+            <li><a href="deals.html">Khuyến mãi</a></li>
+            <li><a href="smart-home.html">Nhà thông minh</a></li>
+            <li><a href="blog.html">Bài viết</a></li>
+            <li><a href="weekly.html">Ưu đãi trong tuần</a></li>
+          </ul>
+          <div class="hotline">
+            <i class="fas fa-phone-alt"></i> Hotline: +888-256-666
+          </div>
+        </div>
+      </nav>
+      <main>
+        <section class="hero-banners home-hero">
+          <div class="container">
+            <div class="hero-grid">
+              <div class="banner-main">
+                <span class="label">Ưu đãi nổi bật</span>
+                <h1>Cuộc sống thông minh<br />tiện nghi cho mỗi nhà</h1>
+                <p class="hero-text">
+                  Khám phá các thiết bị điện tử và gia dụng chất lượng cao với
+                  giá ưu đãi hấp dẫn. Cùng nghệ hiện đại cho người nhà của bạn.
+                </p>
+                <a href="shop.html" class="shop-now-btn">Mua ngay</a>
+              </div>
+              <div class="banner-side-grid">
+                <div class="banner-card">
+                  <h3>Tai nghe Bluetooth</h3>
+                  <p>âm thanh sống động, không dây</p>
+                  <span class="price">1,290,000 VNĐ</span>
+                </div>
+                <div class="banner-card">
+                  <h3>Máy pha cà phê</h3>
+                  <p>Tiện lợi cho gia đình</p>
+                  <span class="price">890,000 VNĐ</span>
+                </div>
+                <div class="banner-card sale-card">
+                  <h3>Đèn LED thông minh</h3>
+                  <p>Tiết kiệm điện, điều khiển từ xa</p>
+                  <span class="sale-badge">Giảm 20%</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section class="categories-strip home-categories">
+          <div class="container">
+            <div class="section-title">
+              <h2>Danh mục nổi bật</h2>
+              <p>Chọn danh mục phù hợp để tìm sản phẩm nhanh hơn.</p>
+            </div>
+            <div class="categories-items" id="categoriesGrid">
+              <div class="loading-message">Đang tải danh mục...</div>
+            </div>
+          </div>
+        </section>
+        <section class="featured-products home-products">
+          <div class="container">
+            <div class="section-header">
+              <h2>Sản phẩm nổi bật</h2>
+              <p>Những mặt hàng được ưu tiên lựa chọn nhất trên trang chủ.</p>
+            </div>
+            <div class="products-grid" id="featuredProductsGrid">
+              <div class="loading-message">Đang tải sản phẩm nổi bật...</div>
+            </div>
+          </div>
+        </section>
+        <section class="weekly-highlight">
+          <div class="container">
+            <div class="weekly-card">
+              <div>
+                <h2>Ưu đãi trong tuần</h2>
+                <p>
+                  Giảm ngay đến 30% trên các thiết bị được săn đón nhất. Đừng bỏ
+                  lỡ cơ hội sở hữu cùng nghệ thuật tiên tiến với giá ưu đãi.
+                </p>
+              </div>
+              <a href="weekly.html" class="shop-now-btn">Xem ngay</a>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+    <!-- CART MODAL -->
+    <div class="cart-overlay" id="cartOverlay">
+      <div class="cart-modal">
+        <div class="cart-header">
+          <h2>?? Giỏ hàng của bạn</h2>
+          <button id="closeCart">&times;</button>
+        </div>
+
+        <div class="cart-body" id="cartItems">
+          <div class="empty-state">Giỏ hàng trống</div>
+        </div>
+
+        <div class="cart-summary">
+          <div class="summary-row">
+            <span>Tổng cộng</span>
+            <span id="subtotal">0 đ</span>
+          </div>
+          <div class="summary-row total">
+            <span>Tổng thanh toán</span>
+            <span id="total">0 đ</span>
+          </div>
+        </div>
+
+        <div class="cart-footer">
+          <button class="btn-secondary" id="continueShopping">
+            Tiếp tục mua
+          </button>
+          <button class="btn-primary" id="checkoutBtn">Thanh toán</button>
+        </div>
+      </div>
+    </div>
+    <script src="tracking.js"></script>
+    \n
+    <script src="utils.js"></script>
+    <script src="script.js"></script>
+    <script src="cart.js"></script>
+    <script src="trangchu.js"></script>
+    <script src="chatbot.js"></script>
+  </body>
+</html>

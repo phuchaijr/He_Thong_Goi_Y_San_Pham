@@ -465,4 +465,276 @@ router.post("/track-recommendation-click", async (req, res, next) => {
   }
 });
 
+// ==================== ADVANCED INTENT ENDPOINTS ====================
+
+const AdvancedIntentHandler = require("../services/advanced-intent-handler");
+
+/**
+ * POST /api/chatbot/analyze-needs/:userId
+ * 1. ANALYZE_USER_NEEDS - Phân tích nhu cầu người dùng
+ */
+router.post("/analyze-needs/:userId", async (req, res, next) => {
+  try {
+    const { userId } = req.params;
+    const { message = "", context = {} } = req.body;
+
+    const analysis = await AdvancedIntentHandler.analyzeUserNeeds(
+      userId,
+      message,
+      context,
+    );
+
+    res.json({
+      success: true,
+      intent: "ANALYZE_USER_NEEDS",
+      analysis,
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
+/**
+ * POST /api/chatbot/refine-search/:userId
+ * 2. REFINE_SEARCH - Điều chỉnh tiêu chí tìm kiếm
+ */
+router.post("/refine-search/:userId", async (req, res, next) => {
+  try {
+    const { userId } = req.params;
+    const { message = "", previousProducts = [], filters = {} } = req.body;
+
+    const refined = await AdvancedIntentHandler.refineSearch(
+      userId,
+      previousProducts,
+      message,
+      filters,
+    );
+
+    res.json({
+      success: true,
+      intent: "REFINE_SEARCH",
+      refined,
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
+/**
+ * POST /api/chatbot/change-priority/:userId
+ * 3. WEIGHT_PRIORITY_CHANGE - Thay đổi ưu tiên
+ */
+router.post("/change-priority/:userId", async (req, res, next) => {
+  try {
+    const { userId } = req.params;
+    const { priorityChanges = {}, currentRecommendations = [] } = req.body;
+
+    const result = await AdvancedIntentHandler.changePriority(
+      userId,
+      priorityChanges,
+      currentRecommendations,
+    );
+
+    res.json({
+      success: true,
+      intent: "WEIGHT_PRIORITY_CHANGE",
+      result,
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
+/**
+ * GET /api/chatbot/explain-recommendation/:productId/:userId
+ * 4. EXPLAIN_RECOMMENDATION - Giải thích lý do gợi ý
+ */
+router.get(
+  "/explain-recommendation/:productId/:userId",
+  async (req, res, next) => {
+    try {
+      const { productId, userId } = req.params;
+      const { source = "personalized" } = req.query;
+
+      const explanation = await AdvancedIntentHandler.explainRecommendation(
+        parseInt(productId),
+        parseInt(userId),
+        source,
+      );
+
+      res.json({
+        success: true,
+        intent: "EXPLAIN_RECOMMENDATION",
+        explanation,
+      });
+    } catch (err) {
+      next(err);
+    }
+  },
+);
+
+/**
+ * GET /api/chatbot/why-not-product/:productId/:userId
+ * 5. WHY_NOT_THIS_PRODUCT - Vì sao không chọn sản phẩm này
+ */
+router.get("/why-not-product/:productId/:userId", async (req, res, next) => {
+  try {
+    const { productId, userId } = req.params;
+    const { message = "" } = req.query;
+
+    const rejection = await AdvancedIntentHandler.explainRejection(
+      parseInt(productId),
+      parseInt(userId),
+      message,
+    );
+
+    res.json({
+      success: true,
+      intent: "WHY_NOT_THIS_PRODUCT",
+      rejection,
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
+/**
+ * GET /api/chatbot/trends
+ * 6. TREND_ANALYSIS - Phân tích xu hướng thị trường
+ */
+router.get("/trends", async (req, res, next) => {
+  try {
+    const { categoryId = null, timeRange = "30days" } = req.query;
+
+    const trends = await AdvancedIntentHandler.analyzeTrends(
+      categoryId ? parseInt(categoryId) : null,
+      timeRange,
+    );
+
+    res.json({
+      success: true,
+      intent: "TREND_ANALYSIS",
+      trends,
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
+/**
+ * GET /api/chatbot/predict-needs/:userId
+ * 7. PREDICT_FUTURE_NEED - Dự đoán nhu cầu tương lai
+ */
+router.get("/predict-needs/:userId", async (req, res, next) => {
+  try {
+    const { userId } = req.params;
+
+    const predictions = await AdvancedIntentHandler.predictFutureNeeds(userId);
+
+    res.json({
+      success: true,
+      intent: "PREDICT_FUTURE_NEED",
+      predictions,
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
+/**
+ * GET /api/chatbot/behavior-analysis/:userId
+ * 8. USER_BEHAVIOR_ANALYSIS - Phân tích hành vi người dùng
+ */
+router.get("/behavior-analysis/:userId", async (req, res, next) => {
+  try {
+    const { userId } = req.params;
+
+    const analysis = await AdvancedIntentHandler.analyzeUserBehavior(userId);
+
+    res.json({
+      success: true,
+      intent: "USER_BEHAVIOR_ANALYSIS",
+      analysis,
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
+/**
+ * GET /api/chatbot/cross-selling/:userId
+ * 9. CROSS_SELLING - Gợi ý bán chéo
+ */
+router.get("/cross-selling/:userId", async (req, res, next) => {
+  try {
+    const { userId } = req.params;
+    const { currentProduct = null } = req.query;
+
+    const crossSellRecommendations =
+      await AdvancedIntentHandler.getCrossSellingRecommendations(
+        parseInt(userId),
+        currentProduct ? parseInt(currentProduct) : null,
+      );
+
+    res.json({
+      success: true,
+      intent: "CROSS_SELLING",
+      recommendations: crossSellRecommendations,
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
+/**
+ * GET /api/chatbot/upsell/:userId/:productId
+ * 10. UP_SELLING - Gợi ý nâng cấp
+ */
+router.get("/upsell/:userId/:productId", async (req, res, next) => {
+  try {
+    const { userId, productId } = req.params;
+    const { budget = null } = req.query;
+
+    const upsellRecommendations =
+      await AdvancedIntentHandler.getUpsellRecommendations(
+        parseInt(userId),
+        parseInt(productId),
+        budget ? parseInt(budget) : null,
+      );
+
+    res.json({
+      success: true,
+      intent: "UP_SELLING",
+      recommendations: upsellRecommendations,
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
+/**
+ * POST /api/chatbot/clarify/:userId
+ * 11. LOW_CONFIDENCE_CLARIFICATION - Hỏi lại khi thiếu thông tin
+ */
+router.post("/clarify/:userId", async (req, res, next) => {
+  try {
+    const { userId } = req.params;
+    const { message = "", context = {} } = req.body;
+
+    const clarification = await AdvancedIntentHandler.requestClarification(
+      parseInt(userId),
+      message,
+      context,
+    );
+
+    res.json({
+      success: true,
+      intent: "LOW_CONFIDENCE_CLARIFICATION",
+      clarification,
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
 module.exports = router;

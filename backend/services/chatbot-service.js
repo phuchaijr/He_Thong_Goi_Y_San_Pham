@@ -558,6 +558,8 @@ class ChatbotService {
     console.log("danh sacsh san pham lien quan", relevantProducts);
     console.log("keywords", keywords);
     console.log("Detailed intent:", detailedIntent);
+    console.log("Context:", context);
+    console.log("User message:", userMessage);
 
     let response = {};
 

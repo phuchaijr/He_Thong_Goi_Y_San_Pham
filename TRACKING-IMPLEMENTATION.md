@@ -233,3 +233,5 @@ Dữ liệu tracking được dùng để:
 - User ID được lấy tự động từ localStorage
 - Sau khi đăng nhập, gọi `tracker.setUserId(userId)`
 - Các endpoint tracking không yêu cầu authentication (except purchase, wishlist, rating)
+  fix
+  for /f "tokens=5" %a in ('netstat -ano ^| findstr :3000 ^| findstr LISTENING') do taskkill /F /PID %a

@@ -694,7 +694,6 @@ router.get("/upsell/:userId/:productId", async (req, res, next) => {
   try {
     const { userId, productId } = req.params;
     const { budget = null } = req.query;
-
     const upsellRecommendations =
       await AdvancedIntentHandler.getUpsellRecommendations(
         parseInt(userId),

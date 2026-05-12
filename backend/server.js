@@ -5,6 +5,7 @@ const cors = require("cors");
 const helmet = require("helmet");
 const morgan = require("morgan");
 const rateLimit = require("express-rate-limit");
+const path = require("path");
 
 const { connectDB } = require("./db");
 
@@ -30,6 +31,7 @@ app.use(
   }),
 );
 app.use(express.json());
+app.use(express.static(path.join(__dirname, "../public")));
 app.use(morgan("dev"));
 
 const apiLimiter = rateLimit({
